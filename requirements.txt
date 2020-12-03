@@ -1,0 +1,9 @@
+numpy
+scipy
+pandas
+matplotlib
+seaborn
+xml
+zipfile
+datetime
+tqdm
