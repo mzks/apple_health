@@ -1,11 +1,19 @@
 # apple_health
 Data manager of exported iPhone health data
 
-## Install
+## Table of Contents
+
+ - [Installation](#installation)
+ - [How to export your data](#export_data)
+ - [Simple usage](#simple_usage)
+ - [Development](#development)
+
+## Installation
 On your system,
 ```
 $ python -m pip install git+https://github.com/mzks/apple_health
 ```
+
 
 ## Export data
  1. In your iPhone, tap `health` app.
@@ -28,3 +36,19 @@ $ python -m pip install git+https://github.com/mzks/apple_health
 
  7. Done! Send the zip file to your system.
 <img src="https://user-images.githubusercontent.com/12980386/101259972-d470ec80-376f-11eb-8af2-e531dc3c7c01.png" width="180px">
+
+## Simple Usage
+Online usage on notebook is [here](./notebook/usage.ipynb).
+
+```
+from apple_health import manager
+man = manager()
+man.path = '/path/to/your/zipfile/directory/'
+man.zip_name = 'export.zip' # default name
+man.as_datetime = True # If you want to obtain the data as datetime type.
+```
+Then, `df = man.get_df()` (takes a few minutes) will generate data as pandas.DataFrame.
+
+
+## Development
+Please make issues and pull-requests freely.
