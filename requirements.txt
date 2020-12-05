@@ -3,7 +3,6 @@ scipy
 pandas
 matplotlib
 seaborn
-xml
-zipfile
 datetime
+elementpath
 tqdm
