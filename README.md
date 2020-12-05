@@ -5,9 +5,9 @@ Data manager to export iPhone health data as pandas.DataFrame
 
 Nowadays, there are many devices to measure our health.
 For example, smart watch, body scale, and app to record our diet.
-Flequently, they are able to export their data, however the formats have much varieties.
+Frequently, they are able to export their data, however, the formats have much varieties.
 It requires a lot of work to investigate the formats for every device.
-Fortunatelly, these data are integrated to `Health.app` on iPhone.
+Fortunately, these data are integrated to `Health.app` on iPhone.
 Of course, we can see the data and nice graphs on our iPhone, but we want to analyze and visualize the data by *ourselves*!
 This repository provides a conversion tool of the data to panda's DataFrame on python environment.
 
