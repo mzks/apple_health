@@ -1,5 +1,8 @@
 # apple_health
-Data manager of exported iPhone health data
+Data manager to export iPhone health data as pandas.DataFrame
+
+## Example of data visualization
+<img src="https://ppwww.phys.sci.kobe-u.ac.jp/~mzks/health.png" width="720px">
 
 ## Table of Contents
 
