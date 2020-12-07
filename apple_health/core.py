@@ -1,8 +1,10 @@
+import os
+from glob import glob
+import zipfile
 import xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import zipfile
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 import datetime as dt
@@ -61,18 +63,69 @@ class manager(object):
         }
 
         self.zip_name = 'export.zip'
-        self.path = '/Users/mzks/Downloads/'
+        self.path = None
+        self.path_list = [os.getcwd(),
+            os.environ['HOME'], os.environ['HOME']+'/Downloads',
+                          ]
+
         self.as_datetime = False
+        self.df = None
+        self.ready_to_generate = False
 
-    def get_df(self, zip_name=None, path=None):
+    def add_path(self, path):
+        self.path_list.insert(0, path)
 
-        if zip_name == None:
-            zip_name = self.zip_name
-        if path == None:
-            path = self.path
-        if path[-1] != '/':
-            path = path + '/'
-        filename = path + zip_name
+    def set_zip_name(self, zip_name='export.zip'):
+        for path in self.path_list:
+            if path[-1] != '/':
+                path = path + '/'
+            if os.path.exists(path+zip_name):
+                self.zip_name = zip_name
+                self.path = path
+                print('File: ' + self.path + self.zip_name)
+                self.ready_to_generate = True
+                return True
+
+        print('Invalid path or zip file name')
+        print('Path list: ')
+        print(self.path_list)
+        print('Zip name:' + self.zip_name)
+        return False
+
+    def set_latest_zip(self, zip_names=['export*.zip']):
+        files = []
+        for path in self.path_list:
+            if path[-1] != '/':
+                path = path + '/'
+            for zip_name in zip_names:
+                files.extend(glob(path + zip_name))
+
+        dates = [os.path.getctime(file) for file in files]
+        if not dates:
+            print('Invalid path or zip file name')
+            print('Path list: ')
+            print(self.path_list)
+            print('Zip name:' + self.zip_name)
+            return
+
+        zip_name_with_path = files[np.argmax(dates)]
+        self.zip_name = os.path.basename(zip_name_with_path)
+        self.path = os.path.dirname(zip_name_with_path)
+        self.ready_to_generate = True
+        print('File: ' + self.path + '/' + self.zip_name)
+        return
+
+    def generate(self):
+
+        if not self.ready_to_generate:
+            self.set_zip_name(self.zip_name)
+        if not self.ready_to_generate:
+            print('No such file.')
+            return
+        if self.path[-1] != '/':
+            path = self.path + '/'
+
+        filename = path + self.zip_name
         zipfile.ZipFile(filename).extractall(path)
         tree = ET.parse(path+'apple_health_export/export.xml')
         root = tree.getroot()
@@ -89,20 +142,27 @@ class manager(object):
             dates = pd.to_datetime(dates)
             start_dates = pd.to_datetime(start_dates)
 
-        df = pd.DataFrame({'date': dates,
-                   'start_date': start_dates,
-                    'value': values,
-                    'type': data_types,
-                    })
+        self.df = pd.DataFrame({'date': dates,
+                           'start_date': start_dates,
+                           'value': values,
+                           'type': data_types,
+                           })
 
-        return df
+
+
+    def get_df(self):
+
+        if self.df is None:
+            self.generate()
+        return self.df
 
 
     def help(self):
 
         print('Usage: ')
-        print("man.path = '/path/to/your/zipfile/'")
-        print("man.zip_name = 'export.zip', for example")
+        print("man.add_path('/path/to/your/zipfile')")
+        print("man.set_zip_name('export.zip'), for example")
+        print('Instead of them, `man.set_latest_zip()` will find the latest zip file in the path list')
         print('')
         print("If you want dates as datetime types")
         print("man.as_datetime = True")
