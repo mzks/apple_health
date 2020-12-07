@@ -36,6 +36,8 @@ Step by step explaination is [here](./Export.md)
 ## Simple Usage
 Online usage on notebook is [here](./notebook/usage.ipynb).
 
+Getting started is,
+
 ```
 from apple_health import manager
 man = manager()
