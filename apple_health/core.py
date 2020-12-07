@@ -73,6 +73,8 @@ class manager(object):
         self.df = None
         self.ready_to_generate = False
 
+        self.timezone = 9 # JST as default
+
 
     def add_path(self, path):
         self.path_list.insert(0, path)
