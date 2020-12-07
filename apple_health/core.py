@@ -67,32 +67,27 @@ class manager(object):
         self.path_list = [os.getcwd(),
             os.environ['HOME'], os.environ['HOME']+'/Downloads',
                           ]
+        self.zip_names = ['export*.zip']
 
         self.as_datetime = False
         self.df = None
         self.ready_to_generate = False
 
+
     def add_path(self, path):
         self.path_list.insert(0, path)
+        return self.path_list
 
-    def set_zip_name(self, zip_name='export.zip'):
-        for path in self.path_list:
-            if path[-1] != '/':
-                path = path + '/'
-            if os.path.exists(path+zip_name):
-                self.zip_name = zip_name
-                self.path = path
-                print('File: ' + self.path + self.zip_name)
-                self.ready_to_generate = True
-                return True
 
-        print('Invalid path or zip file name')
-        print('Path list: ')
-        print(self.path_list)
-        print('Zip name:' + self.zip_name)
-        return False
+    def add_zip_name(self, zip_name):
+        self.zip_names.insert(0, zip_name)
+        return self.zip_names
 
-    def set_latest_zip(self, zip_names=['export*.zip']):
+
+
+    def set_latest_zip(self, zip_names=None):
+        if zip_names is None:
+            zip_names = self.zip_names
         files = []
         for path in self.path_list:
             if path[-1] != '/':
@@ -115,10 +110,34 @@ class manager(object):
         print('File: ' + self.path + '/' + self.zip_name)
         return
 
+
+    def prepare(self):
+        for path in self.path_list:
+            if path[-1] != '/':
+                path = path + '/'
+            for zip_name in self.zip_names:
+                if os.path.exists(path + zip_name):
+                    self.path = path[:-1]
+                    self.zip_name = zip_name
+                    self.ready_to_generate = True
+                    return
+
+        if not self.ready_to_generate:
+            print('Invalid path or zip file name')
+            print('Path list: ')
+            print(self.path_list)
+            print('Zip name list:')
+            print(self.zip_names)
+            return
+
+        return
+        
+
+
     def generate(self):
 
         if not self.ready_to_generate:
-            self.set_zip_name(self.zip_name)
+            self.prepare()
         if not self.ready_to_generate:
             print('No such file.')
             return
@@ -126,6 +145,7 @@ class manager(object):
             path = self.path + '/'
 
         filename = path + self.zip_name
+        print('target file: ' + filename)
         zipfile.ZipFile(filename).extractall(path)
         tree = ET.parse(path+'apple_health_export/export.xml')
         root = tree.getroot()
@@ -161,8 +181,8 @@ class manager(object):
 
         print('Usage: ')
         print("man.add_path('/path/to/your/zipfile')")
-        print("man.set_zip_name('export.zip'), for example")
-        print("Instead of them, `man.set_latest_zip(['export*.zip'])` will find the latest zip file in the path list")
+        print("man.add_zip_name('export.zip'), for example")
+        print("Instead of `them`, `man.set_latest_zip()` will find the latest zip file in the path list")
         print('')
         print("If you want dates as datetime types")
         print("man.as_datetime = True")
