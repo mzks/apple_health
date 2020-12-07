@@ -39,8 +39,8 @@ Online usage on notebook is [here](./notebook/usage.ipynb).
 ```
 from apple_health import manager
 man = manager()
-man.path = '/path/to/your/zipfile/directory/'
-man.zip_name = 'export.zip' # default name
+man.add_path('/path/to/your/zipfile/directory/')
+man.set_zip_name('export.zip')
 man.as_datetime = True # If you want to obtain the data as datetime type.
 ```
 Then, `df = man.get_df()` (takes a few minutes) will generate data as pandas.DataFrame.

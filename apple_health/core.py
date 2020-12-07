@@ -162,7 +162,7 @@ class manager(object):
         print('Usage: ')
         print("man.add_path('/path/to/your/zipfile')")
         print("man.set_zip_name('export.zip'), for example")
-        print('Instead of them, `man.set_latest_zip()` will find the latest zip file in the path list')
+        print("Instead of them, `man.set_latest_zip(['export*.zip'])` will find the latest zip file in the path list")
         print('')
         print("If you want dates as datetime types")
         print("man.as_datetime = True")
