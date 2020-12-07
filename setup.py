@@ -11,7 +11,7 @@ with open('README.md') as file:
 
 setuptools.setup(
     name='apple_health',
-    version='1.0',
+    version='1.1',
     description='Data manager of exported iPhone health data',
     author='Keita Mizukoshi (@mzks)',
     url='https://github.com/mzks/apple_health',

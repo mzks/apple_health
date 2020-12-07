@@ -177,6 +177,7 @@ class manager(object):
         return self.df
 
 
+
     def help(self):
 
         print('Usage: ')
