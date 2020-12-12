@@ -5,8 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime as dt
-import seaborn as sns
-sns.set()
 
 class visualizer(object):
 
@@ -35,7 +33,7 @@ class visualizer(object):
         fig, ax = plt.subplots()
         ax.plot(self.df['date'], self.df['value'])
         ax.set_ylabel(self.type)
-        ax.set_xticks(ax.get_xticks()[::int(len(ax.get_xticks()) / 10)])
+        ax.set_xticks(ax.get_xticks()[::int(len(ax.get_xticks()) / 5)])
         fig.autofmt_xdate(rotation=90)
 
         return ax
