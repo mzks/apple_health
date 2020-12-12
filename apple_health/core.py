@@ -67,7 +67,7 @@ class manager(object):
         self.path_list = [os.getcwd(),
             os.environ['HOME'], os.environ['HOME']+'/Downloads',
                           ]
-        self.zip_names = ['export*.zip']
+        self.zip_names = ['export*.zip', '書き出したデータ*.zip']
 
         self.as_datetime = False
         self.df = None
