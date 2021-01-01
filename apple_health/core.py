@@ -109,7 +109,8 @@ class manager(object):
         self.zip_name = os.path.basename(zip_name_with_path)
         self.path = os.path.dirname(zip_name_with_path)
         self.ready_to_generate = True
-        print('File: ' + self.path + '/' + self.zip_name)
+        print('Latest file: ' + self.path + '/' + self.zip_name)
+        print('Updated: ' + dt.datetime.fromtimestamp(np.max(dates)).isoformat())
         return
 
 
